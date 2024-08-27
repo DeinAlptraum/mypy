@@ -19,6 +19,7 @@ class BuildType:
 
 PER_MODULE_OPTIONS: Final = {
     # Please keep this list sorted
+    "allow_missing_pytyped",
     "allow_redefinition",
     "allow_untyped_globals",
     "always_false",
@@ -113,6 +114,8 @@ class Options:
         self.ignore_missing_imports = False
         # Is ignore_missing_imports set in a per-module section
         self.ignore_missing_imports_per_module = False
+        # Typecheck modules without stubs or py.typed marker
+        self.allow_missing_pytyped = False
         self.follow_imports = "normal"  # normal|silent|skip|error
         # Whether to respect the follow_imports setting even for stub files.
         # Intended to be used for disabling specific stubs.

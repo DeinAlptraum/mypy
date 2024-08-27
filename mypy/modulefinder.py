@@ -334,7 +334,17 @@ class FindModuleCache:
             if approved_stub_package_exists(".".join(components[:i])):
                 return ModuleNotFoundReason.APPROVED_STUBS_NOT_INSTALLED
         if plausible_match:
-            return ModuleNotFoundReason.FOUND_WITHOUT_TYPE_HINTS
+            allow_missing_pytyped = self.options.allow_missing_pytyped
+            try:
+                allow_missing_pytyped = self.options.per_module_options[components[0]][
+                    "allow_missing_pytyped"
+                ]
+            except KeyError:
+                pass
+            if allow_missing_pytyped:
+                return os.path.join(pkg_dir, *components[:-1]), False
+            else:
+                return ModuleNotFoundReason.FOUND_WITHOUT_TYPE_HINTS
         else:
             return ModuleNotFoundReason.NOT_FOUND
 
